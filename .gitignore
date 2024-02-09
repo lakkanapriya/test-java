@@ -1,6 +1,7 @@
 .devcontainer
 lp-notes.txt
 bt-readme.md
+target
 
 # Compiled class file
 *.class
