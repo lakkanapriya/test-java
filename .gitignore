@@ -1,4 +1,6 @@
 .devcontainer
+lp-notes.txt
+bt-readme.md
 
 # Compiled class file
 *.class
