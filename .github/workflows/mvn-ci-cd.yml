@@ -36,8 +36,16 @@ jobs:
         #distribution: 'temurin'
         distribution: 'corretto'
         cache: maven
-    - name: Code Analysis
-      uses: actions/
+    #- name: PMD Code Analysis
+      #id: pmd
+      #uses: pmd/pmd-github-action@v1
+      #with:
+        #version: '6.40.0'
+        #sourcePath: 'src/main/java'
+        #rulesets: 'rulesets/java/quickstart.xml,ruleset.xml'
+        #analyzeModifiedFilesOnly: false
+
+    - name: Checkstyle Code Analysis
     
     - name: Build with Maven
       #run: mvn -B package --file pom.xml
