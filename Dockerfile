@@ -1,13 +1,17 @@
 FROM ubuntu:22.04 as base
 SHELL ["/usr/bin/bash", "-c"]
-#RUN rm -f /etc/ssl/certs/ca-bundle.crt \
-RUN apt reinstall ca-certificates \
-  && update-ca-certificates
 RUN DEBIAN_FRONTEND=noninteractive \
   apt update \
   && apt install -y --no-install-recommends curl wget zip unzip \
   && apt upgrade -y
-#RUN echo "alias curl='curl -k'" >> $HOME/.bashrc
+RUN apt-get remove ca-certificates \
+  && apt-get -y install ca-certificates \
+  && update-ca-certificates \
+  && chmod -R 755 /etc/ssl/certs \
+  && mkdir -p /etc/pki/tls/certs \
+  && cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt \
+  && export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+
 RUN DEBIAN_FRONTEND=noninteractive \
   curl -s "https://get.sdkman.io" | /usr/bin/bash \
   && source $HOME/.sdkman/bin/sdkman-init.sh \
