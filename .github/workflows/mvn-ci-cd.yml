@@ -95,7 +95,7 @@ jobs:
       id: artifacts-upload-step
       uses: actions/upload-artifact@v4
       with:
-        name: package
+        name: TestReports
         #path: target/tdd-supermarket-1.0.0-SNAPSHOT.jar
         path: staging
         #path: target/*.jar
