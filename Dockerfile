@@ -1,12 +1,15 @@
 FROM ubuntu:22.04 as base
 SHELL ["/usr/bin/bash", "-c"]
+#RUN rm -f /etc/ssl/certs/ca-bundle.crt \
+RUN apt reinstall ca-certificates \
+  && update-ca-certificates
 RUN DEBIAN_FRONTEND=noninteractive \
   apt update \
   && apt install -y --no-install-recommends curl wget zip unzip \
   && apt upgrade -y
-RUN echo "alias curl='curl -k'" >> $HOME/.bashrc
+#RUN echo "alias curl='curl -k'" >> $HOME/.bashrc
 RUN DEBIAN_FRONTEND=noninteractive \
-  curl -k "https://get.sdkman.io" | /usr/bin/bash \
+  curl -s "https://get.sdkman.io" | /usr/bin/bash \
   && source $HOME/.sdkman/bin/sdkman-init.sh \
   && sdk install java 17.0.10-amzn
 
