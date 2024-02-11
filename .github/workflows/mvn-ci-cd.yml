@@ -50,8 +50,8 @@ jobs:
       #run: exit 1
     - name: Upload PMD SARIF file
       uses: github/codeql-action/upload-sarif@v3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #env:
+        #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         sarif_file: pmd-report.sarif
         category: static-code-analysis-tool
