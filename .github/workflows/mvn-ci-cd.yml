@@ -66,29 +66,30 @@ jobs:
     #- name: Checkstyle Code Analysis
     
     - name: Compile Test with Maven
-      #run: mvn -B package --file pom.xml
+      #add maven-surefire-report-plugin and jacoco-maven-plugin to pom
       #if: github.event_name == 'push'
       run: |
         #create seperate directory for output artifacts
-        [ -e staging ] || mkdir staging
+        [ -e staging ] || mkdir -p staging/testOuts
         #cleanup, compile the sources and run test cases ; mvn uses surefire plugin to run junit tests
         mvn -B clean test --file pom.xml
-        #generate surefire report ; it creates target/site
-        mvn surefire-report:report
+        mvn -B site
+        mvn -B surefire-report:report
+        mvn -B jacoco:report
         [ -e target/site ] && mv target/site staging/
-        #
-        
-        mvn -B package --file pom.xml
+        [ -e target/surefire-reports ] && mv target/surefire-reports staging/testOuts/
+        [ -e target/jacoco.exec ] && mv target/jacoco.exec staging/testOuts/
+        mvn clean
+        mvn -B package -Dmaven.test.skip=true --file pom.xml
         [ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && mv target/tdd-supermarket-1.0.0-SNAPSHOT.jar staging/tdd-supermarket-1.0.0-SNAPSHOT-${GITHUB_RUN_NUMBER}.jar
         #[ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT.jar target/tdd-supermarket-1.0.0-SNAPSHOT-${GITHUB_RUN_NUMBER}.jar
-        
     
-    - name: JaCoCo Report
-      run: |
-        mkdir jacoco
-        cd jacoco
-        wget https://repo1.maven.org/maven2/org/jacoco/jacoco/0.8.11/jacoco-0.8.11.zip
-        unzip jacoco-0.8.11.zip
+    #- name: JaCoCo Report
+      #run: |
+        #mkdir jacoco
+        #cd jacoco
+        #wget https://repo1.maven.org/maven2/org/jacoco/jacoco/0.8.11/jacoco-0.8.11.zip
+        #unzip jacoco-0.8.11.zip
         
     - name: Upload built jar and test reports
       id: artifacts-upload-step
