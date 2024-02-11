@@ -22,9 +22,9 @@ on:
 #env:
   #build-number: ${GITHUB_RUN_NUMBER}
 
-defaults:
-  run:
-    working-directory: ./workDir
+#defaults:
+  #run:
+    #working-directory: ./workDir
   
 jobs:
   build:
@@ -127,7 +127,7 @@ jobs:
     - name: Build and Push
       uses: docker/build-push-action@v5
       with:
-        context: ./workDir
-        file: ./workDir/Dockerfile
+        context: .
+        file: ./Dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/test-repo:tdd-supermarket
