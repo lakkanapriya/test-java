@@ -83,7 +83,7 @@ jobs:
         [ -e target/site ] && mv target/site staging/
         [ -e target/surefire-reports ] && mv target/surefire-reports staging/testOuts/
         [ -e target/jacoco.exec ] && mv target/jacoco.exec staging/testOuts/
-        mvn -B clean package -Dmaven.test.skip=true --file pom.xml
+        mvn -B clean package spring-boot:repackage -Dmaven.test.skip=true --file pom.xml
         [ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && mv target/tdd-supermarket-1.0.0-SNAPSHOT.jar staging/tdd-supermarket-1.0.0-SNAPSHOT-${GITHUB_RUN_NUMBER}.jar
         #[ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT.jar target/tdd-supermarket-1.0.0-SNAPSHOT-${GITHUB_RUN_NUMBER}.jar
         #[ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && mv target/tdd-supermarket-1.0.0-SNAPSHOT.jar staging/
@@ -140,7 +140,7 @@ jobs:
         REGISTRY: ${{ steps.docker-login.outputs.registry }}
       run: |
         #pwd
-        #ls -l target staging
+        ls -l target staging
         docker build --build-arg WORKDIR=${{ github.workspace }} -t ${{ secrets.DOCKERHUB_USERNAME }}/$REPO:$TAG .
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/$REPO:$TAG
         #docker push $REGISTRY/$REPO:latest
