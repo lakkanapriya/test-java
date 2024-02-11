@@ -1,5 +1,5 @@
 #FROM ubuntu:22.04 as base
-FROM ubuntu/jre:17-22.04_35
+FROM openjdk:17-jdk-slim
 #SHELL ["/usr/bin/bash", "-c"]
 #RUN DEBIAN_FRONTEND=noninteractive \
 #  apt update \
