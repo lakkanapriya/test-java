@@ -145,6 +145,11 @@
 			        <descriptorRefs>
 			          <descriptorRef>jar-with-dependencies</descriptorRef>
 			        </descriptorRefs>
+				<archive>
+			            <manifest>
+			              <mainClass>com/bt/cdo/supermarket/Application</mainClass>
+			            </manifest>
+			        </archive>
 			      </configuration>
 			      <executions>
 			        <execution>
