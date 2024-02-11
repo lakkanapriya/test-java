@@ -139,7 +139,7 @@ jobs:
         TAG: tdd-supermarket
         REGISTRY: ${{ steps.docker-login.outputs.registry }}
       run: |
-        docker build -t $REGISTRY/$REPO:$TAG .
-        docker push $REGISTRY/$REPO:$TAG
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$REPO:$TAG .
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/$REPO:$TAG
         #docker push $REGISTRY/$REPO:latest
-        echo "::set-output name=image::$REGISTRY/$REPO:$TAG"
+        echo "::set-output name=image::${{ secrets.DOCKERHUB_USERNAME }}/$REPO:$TAG"
