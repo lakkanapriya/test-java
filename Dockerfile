@@ -34,10 +34,12 @@ RUN DEBIAN_FRONTEND=noninteractive \
   source $HOME/.sdkman/bin/sdkman-init.sh \
   && echo "source $HOME/.sdkman/bin/sdkman-init.sh" >> $HOME/.bashrc \
   && sdk install maven 3.9.6 \
-  && sdk install springboot 3.2.2
+  && sdk install springboot 3.2.2 \
+  && pwd \
+  && ls -l
 RUN DEBIAN_FRONTEND=noninteractive \
   source $HOME/.sdkman/bin/sdkman-init.sh \
-  && mvn -B clean package -Dmaven.test.skip=true --file pom.xml
+  && mvn -B clean package -Dmaven.test.skip=true --file ./pom.xml
 
 FROM base
 #mkdir bin
