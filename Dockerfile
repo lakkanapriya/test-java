@@ -14,6 +14,7 @@ RUN apt-get remove ca-certificates \
 
 RUN DEBIAN_FRONTEND=noninteractive \
   curl -s "https://get.sdkman.io" | /usr/bin/bash \
+  && echo "source $HOME/.sdkman/bin/sdkman-init.sh" >> $HOME/.bashrc \
   && source $HOME/.sdkman/bin/sdkman-init.sh \
   && sdk install java 17.0.10-amzn
 
@@ -31,9 +32,12 @@ FROM base as build
 #RUN git clone --branch main --single-branch https://github.com/lakkanapriya/test-java.git
 RUN DEBIAN_FRONTEND=noninteractive \
   source $HOME/.sdkman/bin/sdkman-init.sh \
+  && echo "source $HOME/.sdkman/bin/sdkman-init.sh" >> $HOME/.bashrc \
   && sdk install maven 3.9.6 \
   && sdk install springboot 3.2.2
-RUN mvn -B clean package -Dmaven.test.skip=true --file pom.xml
+RUN DEBIAN_FRONTEND=noninteractive \
+#  source $HOME/.sdkman/bin/sdkman-init.sh \
+  && mvn -B clean package -Dmaven.test.skip=true --file pom.xml
 
 FROM base
 #mkdir bin
