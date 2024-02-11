@@ -54,7 +54,7 @@ jobs:
         sarif_file: pmd-report.sarif
         category: static-code-analysis-tool
 
-    - name: Checkstyle Code Analysis
+    #- name: Checkstyle Code Analysis
     
     - name: Build with Maven
       #run: mvn -B package --file pom.xml
