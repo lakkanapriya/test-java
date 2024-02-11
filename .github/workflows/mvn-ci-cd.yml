@@ -33,6 +33,7 @@ jobs:
     steps:
     - name: Code Checkout
       uses: actions/checkout@v4
+      
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
@@ -41,6 +42,7 @@ jobs:
         #distribution: 'temurin'
         distribution: 'corretto'
         cache: maven
+        
     - name: PMD Code Analysis
       id: pmd
       uses: pmd/pmd-github-action@v1
@@ -63,34 +65,45 @@ jobs:
 
     #- name: Checkstyle Code Analysis
     
-    - name: Build with Maven
+    - name: Compile Test with Maven
       #run: mvn -B package --file pom.xml
       #if: github.event_name == 'push'
       run: |
-        mvn -B clean test package --file pom.xml
-        #[ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && mkdir staging && mv target/tdd-supermarket-1.0.0-SNAPSHOT.jar staging/tdd-supermarket-1.0.0-SNAPSHOT-${GITHUB_RUN_NUMBER}.jar
-        [ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT.jar target/tdd-supermarket-1.0.0-SNAPSHOT-${GITHUB_RUN_NUMBER}.jar
-
+        #create seperate directory for output artifacts
+        [ -e staging ] || mkdir staging
+        #cleanup, compile the sources and run test cases ; mvn uses surefire plugin to run junit tests
+        mvn -B clean test --file pom.xml
+        #generate surefire report ; it creates target/site
+        mvn surefire-report:report
+        [ -e target/site ] && mv target/site staging/
+        #
+        
+        mvn -B package --file pom.xml
+        [ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && mv target/tdd-supermarket-1.0.0-SNAPSHOT.jar staging/tdd-supermarket-1.0.0-SNAPSHOT-${GITHUB_RUN_NUMBER}.jar
+        #[ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT.jar target/tdd-supermarket-1.0.0-SNAPSHOT-${GITHUB_RUN_NUMBER}.jar
+        
+    
     - name: JaCoCo Report
       run: |
         mkdir jacoco
         cd jacoco
         wget https://repo1.maven.org/maven2/org/jacoco/jacoco/0.8.11/jacoco-0.8.11.zip
         unzip jacoco-0.8.11.zip
-    - name: Upload built jar file
-      id: jar-upload-step
+        
+    - name: Upload built jar and test reports
+      id: artifacts-upload-step
       uses: github/upload-artifact@v4
       with:
         name: package
         #path: target/tdd-supermarket-1.0.0-SNAPSHOT.jar
-        #path: staging
-        path: target/*.jar
+        path: staging
+        #path: target/*.jar
         #path: |
           #path/output/bin/
           #path/output/test-results
         retention-days: 1
     - name: Output jar artifact ID
-      run:  echo 'Artifact ID is ${{ steps.jar-upload-step.outputs.artifact-id }}'
+      run:  echo 'Artifact ID is ${{ steps.artifacts-upload-step.outputs.artifact-id }}'
         
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
