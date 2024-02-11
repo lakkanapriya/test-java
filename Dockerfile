@@ -49,4 +49,4 @@ FROM openjdk:17-jdk-slim
 COPY ./target/tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar ./tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 #CMD ["java -jar ./tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar"]
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "./tdd-supermarket-1.0.0-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "./tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar"]
