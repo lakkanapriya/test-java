@@ -2,18 +2,21 @@ FROM ubuntu:22.04 as base
 SHELL ["/usr/bin/bash", "-c"]
 RUN DEBIAN_FRONTEND=noninteractive \
   apt update \
-  && apt install -y --no-install-recommends curl wget \
+  && apt install -y --no-install-recommends curl wget zip unzip \
   && apt upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive \
+  curl -k "https://get.sdkman.io" | /usr/bin/bash \
+  && source $HOME/.sdkman/bin/sdkman-init.sh \
+  && sdk install java 17.0.10-amzn
+
 #  curl -o sdkman.sh "https://get.sdkman.io" \
-  wget --no-check-certificate -O sdkman.sh "https://get.sdkman.io" \
-  && chmod +x sdkman.sh \
-  && ./sdkman.sh
-#  curl -s "https://get.sdkman.io" | /usr/bin/bash -x
-RUN env
-RUN find / -name \.sdkman 
-RUN source $HOME/.sdkman/bin/sdkman-init.sh
-RUN sdk install java 17.0.10-amzn
+#  wget --no-check-certificate -O sdkman.sh "https://get.sdkman.io" \
+#  && chmod +x sdkman.sh \
+#  && ./sdkman.sh
+
+#RUN env
+#RUN find / -name \.sdkman 
+#RUN source $HOME/.sdkman/bin/sdkman-init.sh
 
 FROM base as build
 #RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git
