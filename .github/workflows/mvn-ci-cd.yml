@@ -92,8 +92,8 @@ jobs:
         #unzip jacoco-0.8.11.zip
         
     - name: Upload built jar and test reports
-      #id: artifacts-upload-step
-      uses: github/upload-artifact@v4
+      id: artifacts-upload-step
+      uses: actions/upload-artifact@v4
       with:
         name: package
         #path: target/tdd-supermarket-1.0.0-SNAPSHOT.jar
@@ -103,8 +103,8 @@ jobs:
           #path/output/bin/
           #path/output/test-results
         retention-days: 1
-    #- name: Output jar artifact ID
-      #run:  echo 'Artifact ID is ${{ steps.artifacts-upload-step.outputs.artifact-id }}'
+    - name: Output jar artifact ID
+      run:  echo 'Artifact ID is ${{ steps.artifacts-upload-step.outputs.artifact-id }}'
         
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
