@@ -30,7 +30,8 @@ FROM base as build
 #RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git
 #RUN git clone --branch main --single-branch https://github.com/lakkanapriya/test-java.git
 RUN DEBIAN_FRONTEND=noninteractive \
-  sdk install maven 3.9.6 \
+  source $HOME/.sdkman/bin/sdkman-init.sh \
+  && sdk install maven 3.9.6 \
   && sdk install springboot 3.2.2
 RUN mvn -B clean package -Dmaven.test.skip=true --file pom.xml
 
