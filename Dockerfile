@@ -2,10 +2,11 @@ FROM ubuntu:22.04 as base
 SHELL ["/usr/bin/bash", "-c"]
 RUN DEBIAN_FRONTEND=noninteractive \
   apt update \
-  && apt install -y --no-install-recommends curl \
+  && apt install -y --no-install-recommends curl wget \
   && apt upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive \
-  curl -o sdkman.sh "https://get.sdkman.io" \
+#  curl -o sdkman.sh "https://get.sdkman.io" \
+  wget -O sdkman.sh "https://get.sdkman.io" \
   && chmod +x sdkman.sh \
   && ./sdkman.sh
 #  curl -s "https://get.sdkman.io" | /usr/bin/bash -x
