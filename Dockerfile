@@ -36,7 +36,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && sdk install maven 3.9.6 \
   && sdk install springboot 3.2.2
 RUN DEBIAN_FRONTEND=noninteractive \
-#  source $HOME/.sdkman/bin/sdkman-init.sh \
+  source $HOME/.sdkman/bin/sdkman-init.sh \
   && mvn -B clean package -Dmaven.test.skip=true --file pom.xml
 
 FROM base
@@ -45,4 +45,6 @@ FROM base
 COPY --from=build target/tdd-supermarket-1.0.0-SNAPSHOT.jar .
 #CMD ["java -jar ./bin/tdd-supermarket-1.0.0-SNAPSHOT.jar"]
 EXPOSE 8080
+RUN DEBIAN_FRONTEND=noninteractive \
+  source $HOME/.sdkman/bin/sdkman-init.sh
 ENTRYPOINT ["java", "-jar", "./tdd-supermarket-1.0.0-SNAPSHOT.jar"]
