@@ -5,11 +5,11 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && apt install -y --no-install-recommends curl \
   && apt upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive \
-  curl -s "https://get.sdkman.io" | /usr/bin/bash \
-  && env \
-  && find / -name \.sdkman \
-  && source $HOME/.sdkman/bin/sdkman-init.sh \
-  && sdk install java 17.0.10-amzn
+  curl -s "https://get.sdkman.io" | /usr/bin/bash -x
+RUN env
+RUN find / -name \.sdkman 
+RUN source $HOME/.sdkman/bin/sdkman-init.sh
+RUN sdk install java 17.0.10-amzn
 
 FROM base as build
 #RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git
