@@ -1,22 +1,23 @@
-FROM ubuntu:22.04 as base
-SHELL ["/usr/bin/bash", "-c"]
-RUN DEBIAN_FRONTEND=noninteractive \
-  apt update \
-  && apt install -y --no-install-recommends curl wget zip unzip \
-  && apt upgrade -y
-RUN apt-get remove ca-certificates \
-  && apt-get -y install ca-certificates \
-  && update-ca-certificates \
-  && chmod -R 755 /etc/ssl/certs \
-  && mkdir -p /etc/pki/tls/certs \
-  && cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt \
-  && export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+#FROM ubuntu:22.04 as base
+FROM ubuntu/jre:17-22.04_35
+#SHELL ["/usr/bin/bash", "-c"]
+#RUN DEBIAN_FRONTEND=noninteractive \
+#  apt update \
+#  && apt install -y --no-install-recommends curl wget zip unzip \
+#  && apt upgrade -y
+#RUN apt-get remove ca-certificates \
+#  && apt-get -y install ca-certificates \
+#  && update-ca-certificates \
+#  && chmod -R 755 /etc/ssl/certs \
+#  && mkdir -p /etc/pki/tls/certs \
+#  && cp /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt \
+#  && export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
-RUN DEBIAN_FRONTEND=noninteractive \
-  curl -s "https://get.sdkman.io" | /usr/bin/bash \
-  && echo "source $HOME/.sdkman/bin/sdkman-init.sh" >> $HOME/.bashrc \
-  && source $HOME/.sdkman/bin/sdkman-init.sh \
-  && sdk install java 17.0.10-amzn
+#RUN DEBIAN_FRONTEND=noninteractive \
+#  curl -s "https://get.sdkman.io" | /usr/bin/bash \
+#  && echo "source $HOME/.sdkman/bin/sdkman-init.sh" >> $HOME/.bashrc \
+#  && source $HOME/.sdkman/bin/sdkman-init.sh \
+#  && sdk install java 17.0.10-amzn
 
 #  curl -o sdkman.sh "https://get.sdkman.io" \
 #  wget --no-check-certificate -O sdkman.sh "https://get.sdkman.io" \
@@ -27,26 +28,24 @@ RUN DEBIAN_FRONTEND=noninteractive \
 #RUN find / -name \.sdkman 
 #RUN source $HOME/.sdkman/bin/sdkman-init.sh
 
-FROM base as build
+#FROM base as build
 #RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends git
 #RUN git clone --branch main --single-branch https://github.com/lakkanapriya/test-java.git
-RUN DEBIAN_FRONTEND=noninteractive \
-  source $HOME/.sdkman/bin/sdkman-init.sh \
-  && echo "source $HOME/.sdkman/bin/sdkman-init.sh" >> $HOME/.bashrc \
-  && sdk install maven 3.9.6 \
-  && sdk install springboot 3.2.2 \
-  && pwd \
-  && ls -l
-RUN DEBIAN_FRONTEND=noninteractive \
-  source $HOME/.sdkman/bin/sdkman-init.sh \
-  && mvn -B clean package -Dmaven.test.skip=true --file ./pom.xml
+#RUN DEBIAN_FRONTEND=noninteractive \
+#  source $HOME/.sdkman/bin/sdkman-init.sh \
+#  && echo "source $HOME/.sdkman/bin/sdkman-init.sh" >> $HOME/.bashrc \
+#  && sdk install maven 3.9.6 \
+#  && sdk install springboot 3.2.2 \
+#  && pwd \
+#  && ls -l /home
+#RUN DEBIAN_FRONTEND=noninteractive \
+#  source $HOME/.sdkman/bin/sdkman-init.sh \
+#  && mvn -B clean package -Dmaven.test.skip=true --file ./pom.xml
 
-FROM base
+#FROM base
 #mkdir bin
 #COPY --from=build staging/tdd-supermarket-1.0.0-SNAPSHOT.jar /bin/tdd-supermarket-1.0.0-SNAPSHOT.jar
-COPY --from=build target/tdd-supermarket-1.0.0-SNAPSHOT.jar .
+COPY target/tdd-supermarket-1.0.0-SNAPSHOT.jar .
 #CMD ["java -jar ./bin/tdd-supermarket-1.0.0-SNAPSHOT.jar"]
 EXPOSE 8080
-RUN DEBIAN_FRONTEND=noninteractive \
-  source $HOME/.sdkman/bin/sdkman-init.sh
 ENTRYPOINT ["java", "-jar", "./tdd-supermarket-1.0.0-SNAPSHOT.jar"]
