@@ -139,8 +139,8 @@ jobs:
         TAG: tdd-supermarket
         REGISTRY: ${{ steps.docker-login.outputs.registry }}
       run: |
-        pwd
-        ls -l target staging ../target
+        #pwd
+        #ls -l target staging
         docker build --build-arg WORKDIR=${{ github.workspace }} -t ${{ secrets.DOCKERHUB_USERNAME }}/$REPO:$TAG .
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/$REPO:$TAG
         #docker push $REGISTRY/$REPO:latest
