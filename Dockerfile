@@ -6,7 +6,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && apt upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive \
 #  curl -o sdkman.sh "https://get.sdkman.io" \
-  wget -O sdkman.sh "https://get.sdkman.io" \
+  wget --no-check-certificate -O sdkman.sh "https://get.sdkman.io" \
   && chmod +x sdkman.sh \
   && ./sdkman.sh
 #  curl -s "https://get.sdkman.io" | /usr/bin/bash -x
