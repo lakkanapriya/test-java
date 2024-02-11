@@ -5,7 +5,10 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && apt install -y --no-install-recommends curl \
   && apt upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive \
-  curl -s "https://get.sdkman.io" | /usr/bin/bash -x
+  curl -o sdkman.sh "https://get.sdkman.io" \
+  && chmod +x sdkman.sh \
+  && ./sdkman.sh
+#  curl -s "https://get.sdkman.io" | /usr/bin/bash -x
 RUN env
 RUN find / -name \.sdkman 
 RUN source $HOME/.sdkman/bin/sdkman-init.sh
