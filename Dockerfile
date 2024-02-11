@@ -45,7 +45,8 @@ FROM openjdk:17-jdk-slim
 #FROM base
 #mkdir bin
 #COPY --from=build staging/tdd-supermarket-1.0.0-SNAPSHOT.jar /bin/tdd-supermarket-1.0.0-SNAPSHOT.jar
-COPY ./target/tdd-supermarket-1.0.0-SNAPSHOT.jar.original ./tdd-supermarket-1.0.0-SNAPSHOT.jar
-#CMD ["java -jar ./tdd-supermarket-1.0.0-SNAPSHOT.jar"]
+#COPY ./target/tdd-supermarket-1.0.0-SNAPSHOT.jar.original ./tdd-supermarket-1.0.0-SNAPSHOT.jar
+COPY ./target/tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar ./tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+#CMD ["java -jar ./tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar"]
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "./tdd-supermarket-1.0.0-SNAPSHOT.jar"]
