@@ -2,6 +2,7 @@ FROM ubuntu:22.04 as base
 SHELL ["/usr/bin/bash", "-c"]
 RUN DEBIAN_FRONTEND=noninteractive \
   apt update \
+  && apt install -y --no-install-recommends curl \
   && apt upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive \
   curl -s "https://get.sdkman.io" | /usr/bin/bash \
