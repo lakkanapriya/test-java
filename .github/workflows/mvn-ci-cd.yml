@@ -43,7 +43,7 @@ jobs:
         version: '7.0.0-rc4'
         sourcePath: 'src/main/java'
         #rulesets: 'rulesets/java/quickstart.xml,ruleset.xml'
-        rulesets: 'rulesets/java/quickstart.xml'
+        rulesets: '.pmd/rulesets/java/quickstart.xml'
         analyzeModifiedFilesOnly: false
     #- name: Fail build if there are PMD violations
       #if: steps.pmd.outputs.violations != 0
