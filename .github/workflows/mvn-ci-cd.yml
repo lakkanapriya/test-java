@@ -22,9 +22,9 @@ on:
 #env:
   #build-number: ${GITHUB_RUN_NUMBER}
 
-#defaults:
-  #run:
-    #working-directory: ./workDir
+defaults:
+  run:
+    working-directory: ${{ github.workspace }}
   
 jobs:
   build:
@@ -139,6 +139,8 @@ jobs:
         TAG: tdd-supermarket
         REGISTRY: ${{ steps.docker-login.outputs.registry }}
       run: |
+        pwd
+        ls -l
         docker build --build-arg WORKDIR=${{ github.workspace }} -t ${{ secrets.DOCKERHUB_USERNAME }}/$REPO:$TAG .
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/$REPO:$TAG
         #docker push $REGISTRY/$REPO:latest
