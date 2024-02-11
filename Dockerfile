@@ -45,7 +45,7 @@ FROM ubuntu/jre:17-22.04_35
 #FROM base
 #mkdir bin
 #COPY --from=build staging/tdd-supermarket-1.0.0-SNAPSHOT.jar /bin/tdd-supermarket-1.0.0-SNAPSHOT.jar
-COPY ./target/tdd-supermarket-1.0.0-SNAPSHOT.jar .
+COPY ../target/tdd-supermarket-1.0.0-SNAPSHOT.jar .
 #CMD ["java -jar ./tdd-supermarket-1.0.0-SNAPSHOT.jar"]
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "./tdd-supermarket-1.0.0-SNAPSHOT.jar"]
