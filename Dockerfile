@@ -6,7 +6,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   && apt upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive \
   curl -s "https://get.sdkman.io" | /usr/bin/bash \
-  && source .sdkman/bin/sdkman-init.sh \
+  && source $HOME/.sdkman/bin/sdkman-init.sh \
   && sdk install java 17.0.10-amzn
 
 FROM base as build
