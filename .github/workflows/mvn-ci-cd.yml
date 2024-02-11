@@ -140,7 +140,7 @@ jobs:
         REGISTRY: ${{ steps.docker-login.outputs.registry }}
       run: |
         pwd
-        ls -l
+        ls -l target staging ../target
         docker build --build-arg WORKDIR=${{ github.workspace }} -t ${{ secrets.DOCKERHUB_USERNAME }}/$REPO:$TAG .
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/$REPO:$TAG
         #docker push $REGISTRY/$REPO:latest
