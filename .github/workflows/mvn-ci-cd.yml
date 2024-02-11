@@ -73,7 +73,7 @@ jobs:
         [ -e staging ] || mkdir -p staging/testOuts
         #cleanup, compile the sources and run test cases ; mvn uses surefire plugin to run junit tests
         mvn -B clean test --file pom.xml
-        mvn -B site
+        #mvn -B site
         mvn -B surefire-report:report
         mvn -B jacoco:report
         [ -e target/site ] && mv target/site staging/
