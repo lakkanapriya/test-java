@@ -4,6 +4,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
   apt update \
   && apt install -y --no-install-recommends curl wget zip unzip \
   && apt upgrade -y
+RUN alias curl='curl -k'
 RUN DEBIAN_FRONTEND=noninteractive \
   curl -k "https://get.sdkman.io" | /usr/bin/bash \
   && source $HOME/.sdkman/bin/sdkman-init.sh \
