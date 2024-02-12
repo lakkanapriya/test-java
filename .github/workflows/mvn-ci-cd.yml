@@ -47,25 +47,25 @@ jobs:
         distribution: 'corretto'
         cache: maven
         
-    ##- name: PMD Code Analysis
-      ##id: pmd
-      ##uses: pmd/pmd-github-action@v1
-      ##with:
-        ##version: '7.0.0-rc4'
-        ##sourcePath: 'src/main/java'
+    - name: PMD Code Analysis
+      id: pmd
+      uses: pmd/pmd-github-action@v1
+      with:
+        version: '7.0.0-rc4'
+        sourcePath: 'src/main/java'
         #rulesets: 'rulesets/java/quickstart.xml,ruleset.xml'
-        ##rulesets: '.pmd/rulesets/java/quickstart.xml'
-        ##analyzeModifiedFilesOnly: false
+        rulesets: '.pmd/rulesets/java/quickstart.xml'
+        analyzeModifiedFilesOnly: false
     #- name: Fail build if there are PMD violations
       #if: steps.pmd.outputs.violations != 0
       #run: exit 1
-    ##- name: Upload PMD SARIF file
-      ##uses: github/codeql-action/upload-sarif@v3
+    - name: Upload PMD SARIF file
+      uses: github/codeql-action/upload-sarif@v3
       #env:
         #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      ##with:
-        ##sarif_file: pmd-report.sarif
-        #category: static-code-analysis-tool
+      with:
+        sarif_file: pmd-report.sarif
+        category: static-code-analysis-tool
 
     #- name: Checkstyle Code Analysis
     
@@ -76,16 +76,15 @@ jobs:
         #create seperate directory for output artifacts
         [ -e staging ] || mkdir -p staging/testOuts
         #cleanup, compile the sources and run test cases ; mvn uses surefire plugin to run junit tests
-        ##mvn -B clean test --file pom.xml
+        mvn -B clean test --file pom.xml
         #mvn -B site
-        ##mvn -B surefire-report:report
-        ##mvn -B jacoco:report
-        ##[ -e target/site ] && mv target/site staging/
-        ##[ -e target/surefire-reports ] && mv target/surefire-reports staging/testOuts/
-        ##[ -e target/jacoco.exec ] && mv target/jacoco.exec staging/testOuts/
+        mvn -B surefire-report:report
+        mvn -B jacoco:report
+        [ -e target/site ] && mv target/site staging/
+        [ -e target/surefire-reports ] && mv target/surefire-reports staging/testOuts/
+        [ -e target/jacoco.exec ] && mv target/jacoco.exec staging/testOuts/
         mvn -B clean package spring-boot:repackage -Dmaven.test.skip=true --file pom.xml
-        #mvn -B package spring-boot:repackage -Dmaven.test.skip=true --file pom.xml
-        ls -l target
+        #ls -l target
         #[ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT.jar staging/tdd-supermarket-1.0.0-SNAPSHOT-${GITHUB_RUN_NUMBER}.jar
         [ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT.jar staging/
         #[ -e target/tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar staging/
