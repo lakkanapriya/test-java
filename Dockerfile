@@ -1,5 +1,6 @@
 #FROM ubuntu:22.04 as base
-FROM openjdk:17-jdk-slim
+#FROM openjdk:17-jdk-slim
+FROM amazoncorretto:17-alpine3.19-jdk
 #SHELL ["/usr/bin/bash", "-c"]
 #RUN DEBIAN_FRONTEND=noninteractive \
 #  apt update \
@@ -45,8 +46,10 @@ FROM openjdk:17-jdk-slim
 #FROM base
 #mkdir bin
 #COPY --from=build staging/tdd-supermarket-1.0.0-SNAPSHOT.jar /bin/tdd-supermarket-1.0.0-SNAPSHOT.jar
-#COPY ./target/tdd-supermarket-1.0.0-SNAPSHOT.jar.original ./tdd-supermarket-1.0.0-SNAPSHOT.jar
-COPY ./target/tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar ./tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar
+#COPY ./target/tdd-supermarket-1.0.0-SNAPSHOT.jar .
+COPY ./target/*.jar .
+#COPY ./target/tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar ./tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 #CMD ["java -jar ./tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar"]
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "./tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar"]
+#ENTRYPOINT ["java -jar ./tdd-supermarket-1.0.0-SNAPSHOT.jar"]
+ENTRYPOINT ["sleep infinity"]
