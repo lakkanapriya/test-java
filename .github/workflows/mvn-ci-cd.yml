@@ -84,10 +84,11 @@ jobs:
         ##[ -e target/surefire-reports ] && mv target/surefire-reports staging/testOuts/
         ##[ -e target/jacoco.exec ] && mv target/jacoco.exec staging/testOuts/
         mvn -B clean package spring-boot:repackage -Dmaven.test.skip=true --file pom.xml
+        #mvn -B package spring-boot:repackage -Dmaven.test.skip=true --file pom.xml
         ls -l target
         #[ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT.jar staging/tdd-supermarket-1.0.0-SNAPSHOT-${GITHUB_RUN_NUMBER}.jar
-        [ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT.jar staging/.
-        [ -e target/tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar staging/.
+        [ -e target/tdd-supermarket-1.0.0-SNAPSHOT.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT.jar staging/
+        #[ -e target/tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar ] && cp target/tdd-supermarket-1.0.0-SNAPSHOT-jar-with-dependencies.jar staging/
     #- name: JaCoCo Report
       #run: |
         #mkdir jacoco
