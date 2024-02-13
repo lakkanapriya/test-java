@@ -169,3 +169,36 @@ jobs:
         #pwd
         #docker build --build-arg WORKDIR=${{ github.workspace }} -t $REGISTRY/$REPO:$TAG .
         #docker push $REGISTRY/$REPO:$TAG
+
+    # Terraform Deploy Infrastructure
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      #with:
+        # Specific version of Terraform CLI
+        #terraform_version: "1.1.7"
+        # Credentials for Terraform Cloud (app.terraform.io)
+        #cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        # Credentials for Terraform Enterprise (TFE)
+        #cli_config_credentials_hostname: 'terraform.example.com'
+        # wrapper script installation can be skipped
+        #terraform_wrapper: false
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+    - name: Terraform Init
+      id: init
+      run: terraform init
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      continue-on-error: true
+    - name: Access earlier steps outputs and outcomes
+      run: |
+        echo ${{ steps.plan.outputs.stdout }}
+        echo ${{ steps.plan.outputs.stderr }}
+        echo ${{ steps.plan.outputs.exitcode }}
+        echo ${{ steps.plan.outcome }}
