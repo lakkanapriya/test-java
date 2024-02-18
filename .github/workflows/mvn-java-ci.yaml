@@ -103,8 +103,8 @@ jobs:
       - name: Output uploaded artifact ID
         run:  echo 'Artifact ID is ${{ steps.upload-jar-testreports.outputs.artifact-id }}'
 
-      - name: Publish Docker Image to Docker Hub
-        id: image-build-docker
+      - name: Build Docker Image
+        id: build-docker-image
         run: |
           docker build --build-arg WORKDIR=${{ github.workspace }} -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:$IMAGE_TAG .
       
@@ -115,6 +115,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Publish Docker Image to Docker Hub
-        id: image-push-docker-hub
+        id: push-image-docker-hub
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}:$IMAGE_TAG
