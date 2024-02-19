@@ -1,0 +1,53 @@
+name: Terraform Provision
+on:
+  workflow_dispatch:
+env:
+  TF_LOG: INFO  # verbosity setting for terraform logs
+  TF_INPUT: false  # prevents terraform from prompting for user input
+  BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE}}  # S3 bucket for the terraform state
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Terraform Setup
+        id: tf-setup
+        uses: hashicorp/setup-terraform@v3
+        #with:
+          #terraform_version: "1.1.7"  # Specific version of Terraform CLI
+          #cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}    # Credentials for Terraform Cloud (app.terraform.io)
+          #cli_config_credentials_hostname: 'terraform.example.com'    # Credentials for Terraform Enterprise (TFE)
+          #terraform_wrapper: false    # wrapper script installation can be skipped
+      
+      - name: Terraform Format
+        id: tf-fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: tf-init
+        run: terraform init -backend-config="bucket=$BUCKET_TF_STATE"
+        
+      - name: Terraform Validate
+        id: tf-validate
+        if: success() || failure()
+        run: terraform validate -no-color
+        
+      - name: Terraform Plan
+        id: tf-plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+
+      - name: Terraform Plan Status
+        if: steps.tf-plan.outcome == 'failure'
+        run: exit 1
+        
+      - name: Access tf-plan outputs and outcomes
+        run: |
+          echo ${{ steps.tf-plan.outputs.stdout }}
+          echo ${{ steps.tf-plan.outputs.stderr }}
+          echo ${{ steps.tf-plan.outputs.exitcode }}
+          echo ${{ steps.tf-plan.outcome }}
+          
+      - name: Terraform Apply
+        #if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -input=false
